@@ -1,0 +1,50 @@
+.addKeeper {   
+    display: flex;
+    flex-direction: column;
+    background: rgb(0, 0, 0);
+    padding: 1rem;
+    border-radius: 20px;
+    margin: 3rem auto;
+    width:fit-content;
+    box-shadow: rgba(0, 0, 0, 0.5) 10px 10px 20px;
+}
+
+.inputBox {
+    border: none;
+    border-radius: 10px;
+    margin: 0.5rem;
+    padding: 1rem;
+    background:rgb(76, 76, 77);
+    outline: none;
+}
+
+.inputBox::placeholder {
+    color:rgb(167, 166, 166);
+}
+
+.titleInput {
+    font-size: 1.5rem;
+    color: rgb(82, 171, 240);
+    font-family: 'Texturina', serif;
+}
+
+.description {
+    font-size:1.1rem;
+    font-family: 'Kanit', sans-serif;
+    min-height: 100px;
+    min-width: 400px;
+    color: rgb(102, 201, 156);
+    resize: none;
+}
+
+.addButton {
+    color: black;
+    font-weight:bold;
+    background: linear-gradient( to bottom right, rgb(114, 248, 185) , rgb(82, 171, 240) );
+    margin: 0.5rem auto;
+    padding: 0.5rem 4.5rem;
+    font-family: 'Texturina', serif;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.5) 0px 50px 100px -20px, rgba(0, 0, 0, 0.5) 0px 30px 60px -30px, rgba(10, 37, 64, 0.5) 0px -2px 6px 0px inset;
+    cursor: pointer;
+}

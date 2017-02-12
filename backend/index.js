@@ -7,18 +7,21 @@ app.use(express.json())
 app.use(express.urlencoded())
 app.use(cors())
 
-mongoose.connect("mongodb://localhost:27017/funcboxDB", () => {
-    console.log("Connected")
-})
+mongoose.connect('mongodb+srv://admin-akshay:Test123@cluster0.icp4w.mongodb.net/funcboxDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
+const keeperSchema = new mongoose.Schema({
+    title: String,
+    description: String
+})
 
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String,
-    title: String,
-    desc: String
+    notes: [keeperSchema]
 })
+
+
 
 const User = new mongoose.model("User", userSchema)
 
@@ -68,45 +71,72 @@ app.post('/register', (req, res) => {
 })
 
 
-app.post('/addNote/:useremail', (req, res) => {
+
+app.get("/api/getAll/:useremail", (req, res) => {
     const email = req.params.useremail
-    console.log(email)
-    const { title, desc } = req.body
-    console.log(req.body)
 
-    User.updateOne({ email: email }, { title: title, desc: desc }, (err, user) => {
-        if (err) {
-            console.log(err)
-        }
-
-        res.send({ message: "Note added!" })
-    })
-})
-
-app.get('/getNote/:useremail', (req, res) => {
-    const email = req.params.useremail
-    console.log('I am used')
     User.findOne({ email: email }, (err, user) => {
         if (err) {
             console.log(err)
+        } else {
+            res.status(200).send(user.notes)
         }
-        else {
-            console.log(user)
-            res.send(user)
-        }
-
-
     })
+})
+
+app.post("/api/addNew/:useremail", (req, res) => {
+    const email = req.params.useremail
+    const { title, description } = req.body
+
+    const keeperObj = {
+        title: title,
+        description: description
+    }
+
+
+
+    User.findOneAndUpdate({ email: email },
+        { $push: { notes: keeperObj } },
+        function (err) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Sth is wrong. Not adding to the notes")
+            }
+        }
+    )
+
+
+})
+
+app.post("/api/delete/:useremail", (req, res) => {
+    const { id } = req.body
+    const email = req.params.useremail
+    console.log(id, email)
+
+    User.updateOne({ email: email },
+        { $pull: { notes: { _id: id } } },
+        function (err) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Sth is wrong. Not deleting note")
+            }
+        }
+    )
+
 })
 
 
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 9002;
+}
 
 
 
 
-
-
-app.listen(9002, () => {
-    console.log('Start on port 9002')
+app.listen(port, () => {
+    console.log('Working,,,')
 })
